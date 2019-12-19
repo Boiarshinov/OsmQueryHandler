@@ -1,5 +1,7 @@
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import geojson.Coordinate;
+import geojson.GeoJson;
 
 import java.util.Arrays;
 

@@ -1,3 +1,5 @@
+package geojson;
+
 public class Coordinate {
     double latitude;
     double longitude;
