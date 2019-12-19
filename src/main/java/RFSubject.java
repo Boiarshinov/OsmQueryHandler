@@ -13,7 +13,7 @@ public class RFSubject {
     @JsonProperty("osm_type")
     public String osmType;
     @JsonProperty("osm_id")
-    public int osmId;
+    public long osmId;
     @JsonProperty("boundingbox")
     private Coordinate[] boundingBox;
     @JsonProperty("lat")

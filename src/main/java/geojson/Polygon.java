@@ -1,17 +1,31 @@
 package geojson;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.Arrays;
 
-public class Polygon implements Polygonable{
+@JsonTypeName("Polygon")
+public class Polygon implements GeoJson{
+    @JsonProperty("coordinates")
     public LinearRing[] linearRings;
     private double area;
     private Coordinate barycenter;
+
+    public Polygon(){ }
 
     public Polygon(LinearRing[] linearRings) {
         this.linearRings = linearRings;
     }
 
     public Polygon(double[][][] linearRings) {
+        this.linearRings = new LinearRing[linearRings.length];
+        for (int i = 0; i < linearRings.length; i++) {
+            this.linearRings[i] = new LinearRing(linearRings[i]);
+        }
+    }
+
+    public void setLinearRings(double[][][] linearRings) {
         this.linearRings = new LinearRing[linearRings.length];
         for (int i = 0; i < linearRings.length; i++) {
             this.linearRings[i] = new LinearRing(linearRings[i]);
@@ -45,16 +59,18 @@ public class Polygon implements Polygonable{
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
+        result.append("\tGeoJson: {\n").append("\t\ttype: Polygon,\n").append("\t\tcoordinates:\n");
         result.append("\t\t\t[\n");
         for (LinearRing linearRing : linearRings) {
             result.append(linearRing);
         }
         result.append("\t\t\t]\n");
+        result.append("\t}\n");
         return result.toString();
     }
 
     public class LinearRing {
-        Coordinate[] coordinates;
+        public Coordinate[] coordinates;
         private double area;
         private Coordinate barycenter;
 

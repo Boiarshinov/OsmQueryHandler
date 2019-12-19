@@ -1,8 +1,8 @@
 package geojson;
 
 public class Coordinate {
-    double latitude;
-    double longitude;
+    public double latitude;
+    public double longitude;
 
     public Coordinate(double longitude, double latitude) {
         this.latitude = latitude;

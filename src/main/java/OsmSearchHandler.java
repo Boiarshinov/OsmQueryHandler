@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,20 +14,22 @@ public class OsmSearchHandler {
     public static final String SOURCE = "https://nominatim.openstreetmap.org/";
 
     public static String search(String searchQuery) throws IOException {
-        URL url = new URL(SOURCE + "search/" +
-                encodeSearchQuery(searchQuery) + "?" +
+        URL url = new URL(SOURCE + "search?q=" +
+                encodeSearchQuery(searchQuery) + "&" +
                 "country=russia" + "&" +
                 "format=json" + "&" +
                 "polygon_geojson=1" + "&" +
                 "limit=1");
 
-        System.out.println("Searching by URL: " + url + "\n");
+        System.out.println("\n=================================");
+        System.out.println("Searching for: " + searchQuery);
+        System.out.println("Searching by URL: " + url);
 
         String jsonString = readJsonStringFromURL(url);
 
-        System.out.println(jsonString);
+        //System.out.println(jsonString);
 
-        System.out.println("\nReading JSON from OSM complete");
+        System.out.println("Reading JSON from OSM complete");
 
         return jsonString;
     }
@@ -48,10 +52,17 @@ public class OsmSearchHandler {
             result = outputStream.toString(StandardCharsets.UTF_8);
         }
 
-        System.out.println("result of reading: " + result + "\n");
+        //System.out.println("result of reading: " + result + "\n");
 
         connection.disconnect();
 
         return result;
+    }
+
+    public static RFSubject parseJsonString(String jsonString) throws IOException{
+        ObjectMapper mapper = new ObjectMapper();
+        RFSubject[] array = mapper.readValue(jsonString, RFSubject[].class);
+        System.out.println("Parsing complete successfully!");
+        return array[0];
     }
 }
