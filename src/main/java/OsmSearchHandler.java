@@ -11,34 +11,60 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class OsmSearchHandler {
-    public static final String SOURCE = "https://nominatim.openstreetmap.org/";
+    public final String SOURCE = "https://nominatim.openstreetmap.org/";
+    private CacheManager cacheManager;
+    private static OsmSearchHandler instance;
 
-    public static String search(String searchQuery) throws IOException {
-        URL url = new URL(SOURCE + "search?q=" +
-                encodeSearchQuery(searchQuery) + "&" +
+    private OsmSearchHandler(){
+        cacheManager = CacheManager.getInstance();
+    }
+
+    public static OsmSearchHandler getInstance(){
+        if (instance == null) instance = new OsmSearchHandler();
+        return instance;
+    }
+
+    public RFSubject search(String searchQuery) throws IOException {
+        System.out.println("\n=================================");
+        if (alreadyHaveInCache(searchQuery)){
+            System.out.print(searchQuery + " is in the cache. Taking it out... ");
+            RFSubject rfSubject = cacheManager.get(searchQuery);
+            System.out.println("Success!");
+            return rfSubject;
+        } else {
+            System.out.println(searchQuery + " is not in the cache. Connecting to OSM server...");
+            URL url = prepareURL(searchQuery);
+            System.out.println("Searching by URL: " + url);
+            String jsonString = readJsonStringFromURL(url);
+            System.out.println("Reading JSON from OSM complete");
+            RFSubject rfSubject = parseJsonString(jsonString);
+            cacheManager.put(searchQuery, rfSubject);
+            return rfSubject;
+        }
+    }
+
+    private RFSubject getFromCache(String query){
+        return cacheManager.get(query);
+    }
+
+    private boolean alreadyHaveInCache(String query){
+        return cacheManager.containsKey(query);
+    }
+
+    private String encodeSearchQuery(String searchQuery) {
+        return URLEncoder.encode(searchQuery, StandardCharsets.UTF_8);
+    }
+
+    private URL prepareURL(String query) throws MalformedURLException{
+        return new URL(SOURCE + "search?q=" +
+                encodeSearchQuery(query) + "&" +
                 "country=russia" + "&" +
                 "format=json" + "&" +
                 "polygon_geojson=1" + "&" +
                 "limit=1");
-
-        System.out.println("\n=================================");
-        System.out.println("Searching for: " + searchQuery);
-        System.out.println("Searching by URL: " + url);
-
-        String jsonString = readJsonStringFromURL(url);
-
-        //System.out.println(jsonString);
-
-        System.out.println("Reading JSON from OSM complete");
-
-        return jsonString;
     }
 
-    public static String encodeSearchQuery(String searchQuery) {
-        return URLEncoder.encode(searchQuery, StandardCharsets.UTF_8);
-    }
-
-    public static String readJsonStringFromURL(URL url) throws IOException {
+    private String readJsonStringFromURL(URL url) throws IOException {
         String result = "something went wrong!";
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -52,14 +78,11 @@ public class OsmSearchHandler {
             result = outputStream.toString(StandardCharsets.UTF_8);
         }
 
-        //System.out.println("result of reading: " + result + "\n");
-
         connection.disconnect();
-
         return result;
     }
 
-    public static RFSubject parseJsonString(String jsonString) throws IOException{
+    private RFSubject parseJsonString(String jsonString) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         RFSubject[] array = mapper.readValue(jsonString, RFSubject[].class);
         System.out.println("Parsing complete successfully!");

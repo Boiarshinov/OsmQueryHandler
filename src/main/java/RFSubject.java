@@ -3,10 +3,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import geojson.Coordinate;
 import geojson.GeoJson;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 @JsonAutoDetect
-public class RFSubject {
+public class RFSubject implements Serializable {
     @JsonProperty("place_id")
     public int placeId;
     public String licence;

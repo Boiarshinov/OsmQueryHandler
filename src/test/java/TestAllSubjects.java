@@ -7,10 +7,11 @@ public class TestAllSubjects {
     public static void main(String[] args) throws IOException {
         ArrayList<String> subjectQueries = readRFSubjects("./src/main/resources/RFSubjects.txt");
         ArrayList<String> geoJsonTypes = new ArrayList<>();
+
+        OsmSearchHandler osmSearchHandler = OsmSearchHandler.getInstance();
         for (String query : subjectQueries) {
             try {
-                String jsonString = OsmSearchHandler.search(query);
-                RFSubject rfSubject = OsmSearchHandler.parseJsonString(jsonString);
+                RFSubject rfSubject = osmSearchHandler.search(query);
                 String geoJsonType = rfSubject.geoJson.getClass().getSimpleName();
                 geoJsonTypes.add(geoJsonType);
                 System.out.println("Type of GeoJSON: " + geoJsonType);
