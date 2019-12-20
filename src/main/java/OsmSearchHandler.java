@@ -1,7 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -10,20 +9,39 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * <p>OSMSearchHandler used to search some subjects of russian federation in
+ * <a href=https://www.openstreetmap.org/>OpenStreetMap</a></p>
+ * Class is a singleton.<p>
+ */
 public class OsmSearchHandler {
-    public final String SOURCE = "https://nominatim.openstreetmap.org/";
     private CacheManager cacheManager;
     private static OsmSearchHandler instance;
 
     private OsmSearchHandler(){
+        System.out.println("Configuring OSM Search Handler");
         cacheManager = CacheManager.getInstance();
+        System.out.println("OSM Search Handler configured!");
     }
 
+    /**
+     * Class is a singleton.
+     * @return Return only instance of OSMSearchHandler
+     */
     public static OsmSearchHandler getInstance(){
         if (instance == null) instance = new OsmSearchHandler();
         return instance;
     }
 
+    /**
+     * For first check query in the cache. If cache have object with same query, than object return from cache.
+     * In another way query is searching in OSM.
+     * @param searchQuery - query that would be searching in OSM.
+     * @return Object that deserialize from incoming JSON.
+     * @throws IOException
+     * @see RFSubject
+     * @see CacheManager
+     */
     public RFSubject search(String searchQuery) throws IOException {
         System.out.println("\n=================================");
         if (alreadyHaveInCache(searchQuery)){
@@ -43,19 +61,34 @@ public class OsmSearchHandler {
         }
     }
 
-    private RFSubject getFromCache(String query){
-        return cacheManager.get(query);
-    }
-
+    /**
+     * Check cache for object with same query
+     * @param query query for OSM
+     * @return true if cache already have object with same query
+     * @see CacheManager
+     */
     private boolean alreadyHaveInCache(String query){
         return cacheManager.containsKey(query);
     }
 
+    /**
+     * Encode cyrillic characters to unicode string
+     * @param searchQuery query to OSM
+     * @return encoded String
+     * @see URLEncoder
+     */
     private String encodeSearchQuery(String searchQuery) {
         return URLEncoder.encode(searchQuery, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Prepare URL for opening HTTP connection
+     * @param query - query for OSM
+     * @return fabricate URL
+     * @throws MalformedURLException
+     */
     private URL prepareURL(String query) throws MalformedURLException{
+        String SOURCE = "https://nominatim.openstreetmap.org/";
         return new URL(SOURCE + "search?q=" +
                 encodeSearchQuery(query) + "&" +
                 "country=russia" + "&" +
@@ -64,6 +97,13 @@ public class OsmSearchHandler {
                 "limit=1");
     }
 
+    /**
+     * Open HTTP connection with OSM and pull GET-query.
+     * @param url - searching URL fabricated from query
+     * @return JSON string
+     * @throws IOException
+     * @see HttpURLConnection
+     */
     private String readJsonStringFromURL(URL url) throws IOException {
         String result = "something went wrong!";
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -82,6 +122,12 @@ public class OsmSearchHandler {
         return result;
     }
 
+    /**
+     * @param jsonString - JSON string come from OSM service
+     * @return Always return first answer of OSM, because it's the most correct answer in larger part of queries.
+     * @throws IOException
+     * @see RFSubject
+     */
     private RFSubject parseJsonString(String jsonString) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         RFSubject[] array = mapper.readValue(jsonString, RFSubject[].class);

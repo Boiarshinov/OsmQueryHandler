@@ -5,17 +5,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 
+/**
+ * Class realise GeoJSON type <a href=https://tools.ietf.org/html/rfc7946#section-3.1.7>MultiPolygon</a>.<p>
+ * MultiPolygon is used to show some areas that can be represent only by group of Polygons.<p>
+ * @see Polygon
+ * @see GeoJson
+ */
 @JsonTypeName("MultiPolygon")
 public class MultiPolygon implements GeoJson{
     @JsonProperty("coordinates")
     public Polygon[] polygons;
 
+    /**
+     * Blank constructor for Jackson
+     */
     public MultiPolygon(){ }
 
     public MultiPolygon(Polygon[] polygons) {
         this.polygons = polygons;
     }
 
+    /**
+     * Method is used by Jackson. Convert four-dimensional double array to Polygon array.
+     * @param polygons - four-dimensional array with coordinates of MultiPolygon
+     * @see Polygon
+     */
     public void setPolygons(double[][][][] polygons) {
         this.polygons = new Polygon[polygons.length];
         for (int i = 0; i < polygons.length; i++) {
@@ -23,6 +37,13 @@ public class MultiPolygon implements GeoJson{
         }
     }
 
+    /**
+     * Calculate center of multipolygon depending on polygons areas and centers.
+     * Calculating is similar to calculating center of mass in physics.
+     * @return MultiPolygon center Coordinate
+     * @see Polygon
+     * @see Coordinate
+     */
     @Override
     public Coordinate getCenter() {
         double sumArea = 0.0;
@@ -42,11 +63,20 @@ public class MultiPolygon implements GeoJson{
         return new Coordinate(longitude, latitude);
     }
 
+    /**
+     * @return Sum of all polygons areas.
+     * @see Polygon
+     */
     @Override
     public double getArea() {
         return Arrays.stream(polygons).mapToDouble(Polygon::getArea).sum();
     }
 
+    /**
+     * @return Coordinate array of outer linear ring of biggest polygon
+     * @see Polygon
+     * @see geojson.Polygon.LinearRing
+     */
     @Override
     public Coordinate[] getCoordinateArray() {
         return findBiggestPolygon().getCoordinateArray();

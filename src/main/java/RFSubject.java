@@ -5,6 +5,12 @@ import geojson.GeoJson;
 
 import java.util.Arrays;
 
+/**
+ * Class represent objects that comes from OSM service. It calls RFSubject only because of test statement.<p>
+ * Class is parsing by Jackson.<p>
+ * The most interesting part of this class is a geoJson field.
+ * @see GeoJson
+ */
 @JsonAutoDetect
 public class RFSubject {
     @JsonProperty("place_id")

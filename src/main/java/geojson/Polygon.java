@@ -5,13 +5,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 
+/**
+ * Class realise GeoJSON type <a href=https://tools.ietf.org/html/rfc7946#section-3.1.6>Polygon</a>.<p>
+ * Polygon is used to show some areas. These areas can be with holes inside them.<p>
+ * Main area and holes submitted by Linear Rings.
+ * @see LinearRing
+ * @see Coordinate
+ * @see GeoJson
+ */
 @JsonTypeName("Polygon")
 public class Polygon implements GeoJson{
     @JsonProperty("coordinates")
     public LinearRing[] linearRings;
-    private double area;
-    private Coordinate barycenter;
 
+    /**
+     * Blank constructor for Jackson
+     */
     public Polygon(){ }
 
     public Polygon(LinearRing[] linearRings) {
@@ -25,6 +34,11 @@ public class Polygon implements GeoJson{
         }
     }
 
+    /**
+     * Method is used by Jackson. Convert tree-dimensional double array to LinearRing array.
+     * @param linearRings - tree-dimensional double array with coordinates
+     * @see LinearRing
+     */
     public void setLinearRings(double[][][] linearRings) {
         this.linearRings = new LinearRing[linearRings.length];
         for (int i = 0; i < linearRings.length; i++) {
@@ -32,6 +46,12 @@ public class Polygon implements GeoJson{
         }
     }
 
+    /**
+     * Calculate center of polygon depending on linear rings areas and centers.
+     * Calculating is similar to calculating center of mass in physics.
+     * @return Polygon center coordinate.
+     * @see LinearRing
+     */
     @Override
     public Coordinate getCenter() {
         double sumArea = 0.0;
@@ -51,14 +71,21 @@ public class Polygon implements GeoJson{
         return new Coordinate(longitude, latitude);
     }
 
+    /**
+     * @return Sum of linear rings areas.
+     * @see LinearRing#getArea()
+     */
     @Override
     public double getArea(){
         return Arrays.stream(linearRings).mapToDouble(LinearRing::getArea).sum();
     }
 
+    /**
+     * @return Coordinate array of outer linear ring (index = 0, because first linear ring in polygon always outer)
+     * @see LinearRing
+     */
     @Override
     public Coordinate[] getCoordinateArray() {
-        //return with id = 0 because first linear ring in polygon always have biggest area (look at GeoJSON spec)
         return linearRings[0].coordinates;
     }
 
@@ -75,15 +102,29 @@ public class Polygon implements GeoJson{
         return result.toString();
     }
 
+
+    /**
+     * Class realise <a href=https://tools.ietf.org/html/rfc7946#section-3.1.6>LinearRing</a>.<p>
+     * LinearRing used to represent surface and holes in Polygon.<p>
+     * A linear ring is a closed LineString with four or more positions.<p>
+     * The first and last positions are equivalent.<p>
+     * A linear ring is the boundary of a surface or the boundary of a hole in a surface.<p>
+     * @see Coordinate
+     * @see GeoJson
+     * @see Polygon
+     */
     public class LinearRing {
         public Coordinate[] coordinates;
         private double area;
-        private Coordinate barycenter;
 
         public LinearRing(Coordinate[] coordinates) {
             this.coordinates = coordinates;
         }
 
+        /**
+         * Constructor for Jackson deserialization of GeoJSON objects.
+         * @param coordinates - two-dimensional double array with coordinates (longitude and latitude)
+         */
         public LinearRing(double[][] coordinates) {
             this.coordinates = new Coordinate[coordinates.length];
             for (int i = 0; i < coordinates.length; i++) {
@@ -91,6 +132,10 @@ public class Polygon implements GeoJson{
             }
         }
 
+        /**
+         * @return If linear ring is a surface - return positive value. If linear ring is a hole - return negative value.
+         * Value can be used only to compare linear rings between each other.
+         */
         public double getArea() {
             if (coordinates.length < 3) return 0.0;
             area = 0.0;
@@ -103,8 +148,8 @@ public class Polygon implements GeoJson{
         }
 
         /**
-         * <p>Calculate barycenter of polygon by <a href="https://ru.wikipedia.org/wiki/%D0%91%D0%B0%D1%80%D0%B8%D1%86%D0%B5%D0%BD%D1%82%D1%80#%D0%91%D0%B0%D1%80%D0%B8%D1%86%D0%B5%D0%BD%D1%82%D1%80_%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE%D1%83%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0">this</a>
-         * formula</p>
+         * @return barycenter of polygon by <a href="https://ru.wikipedia.org/wiki/%D0%91%D0%B0%D1%80%D0%B8%D1%86%D0%B5%D0%BD%D1%82%D1%80#%D0%91%D0%B0%D1%80%D0%B8%D1%86%D0%B5%D0%BD%D1%82%D1%80_%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE%D1%83%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0">this</a>
+         * formula
          */
         public Coordinate getBarycenter() {
             getArea();
@@ -120,12 +165,12 @@ public class Polygon implements GeoJson{
             }
             longitude /= 6 * area;
             latitude /= 6 * area;
-            barycenter = new Coordinate(longitude, latitude);
-            return barycenter;
+            return new Coordinate(longitude, latitude);
         }
 
-
-
+        /**
+         * Need for Jackson serialization
+         */
         public double[][] convertToDoubleArray() {
             double[][] result = new double[coordinates.length][2];
             for (int i = 0; i < result.length; i++) {

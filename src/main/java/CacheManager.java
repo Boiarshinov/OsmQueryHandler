@@ -1,4 +1,3 @@
-import javax.swing.text.html.parser.Entity;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,12 +6,25 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * CacheManager is a class that manage operations with cache.<p>
+ * Cache size is set by .properties file.<p>
+ * Cache was realized by the LinkedHashMap. So if cache is full when first object in cache would remove
+ * and new object will set to the end of the map.<p>
+ * Class is a singleton.
+ * @see LinkedHashMap
+ */
 public class CacheManager {
     private static CacheManager instance;
     private LinkedHashMap<String, RFSubject> querySubjectMap;
     private final int CACHE_SIZE;
 
+    /**
+     * Cache size is set by .properties file.<p>
+     * If some problem occurs while reading .properties file when cache size is set to 100.
+     */
     private CacheManager() {
+        System.out.println("Configuring Cache Manager");
         int tempCacheSize;
         int defaultCacheSize = 100;
         try {
@@ -28,13 +40,26 @@ public class CacheManager {
         }
         CACHE_SIZE = tempCacheSize;
         querySubjectMap = new LinkedHashMap<>(CACHE_SIZE);
+        System.out.println("Cache Manager configured!");
     }
 
+    /**
+     * Class is a singleton.
+     * @return Return only instance of CacheManager
+     */
     public static CacheManager getInstance() {
         if (instance == null) instance = new CacheManager();
         return instance;
     }
 
+    /**
+     * Put into cache query and object, that returned as a result of query.<p>
+     * If cache is full when first object in cache would remove
+     * and new object will set to the end of the map.<p>
+     * @param query query for OSM
+     * @param rfSubject object that return as a result of searching in OSM
+     * @see OsmSearchHandler
+     */
     public void put(String query, RFSubject rfSubject){
         if (querySubjectMap.size() < CACHE_SIZE){
             querySubjectMap.put(query, rfSubject);
@@ -46,6 +71,11 @@ public class CacheManager {
         }
     }
 
+    /**
+     * Get object from the cache and replace entry in inner map to the end.
+     * @param key query for OSM
+     * @return object which one was returned by key query
+     */
     public RFSubject get(String key){
         if (querySubjectMap.containsKey(key)){
             RFSubject answer = querySubjectMap.get(key);
@@ -54,10 +84,16 @@ public class CacheManager {
         } else return null;
     }
 
+    /**
+     * @return number of entries in cache
+     */
     public int size(){
         return querySubjectMap.size();
     }
 
+    /**
+     * Clear cache from objects in it.
+     */
     public void clear(){
         querySubjectMap.clear();
     }
@@ -67,10 +103,18 @@ public class CacheManager {
         querySubjectMap.put(key, rfSubject);
     }
 
+    /**
+     * @return max cache size
+     */
     public int getCacheSize() {
         return CACHE_SIZE;
     }
 
+    /**
+     * Returns true if this cache contains an object for search query.
+     * @param key query for OSM
+     * @return true if this cache contains an object for the specified key.
+     */
     public boolean containsKey(String key){
         return querySubjectMap.containsKey(key);
     }
