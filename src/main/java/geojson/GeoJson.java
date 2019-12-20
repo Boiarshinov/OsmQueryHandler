@@ -17,4 +17,6 @@ public interface GeoJson {
     Coordinate getCenter();
 
     double getArea();
+
+    Coordinate[] getCoordinateArray();
 }

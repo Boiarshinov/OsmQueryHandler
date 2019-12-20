@@ -48,6 +48,20 @@ public class MultiPolygon implements GeoJson{
     }
 
     @Override
+    public Coordinate[] getCoordinateArray() {
+        return findBiggestPolygon().getCoordinateArray();
+    }
+
+    private Polygon findBiggestPolygon(){
+        int id = 0;
+        double maxArea = 0.0;
+        for (int i = 0; i < polygons.length; i++) {
+            if (polygons[i].getArea() > maxArea) id = i;
+        }
+        return polygons[id];
+    }
+
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("GeoJson: {\n").append("\ttype: Multipolygon,\n").append("\tcoordinates:\n");

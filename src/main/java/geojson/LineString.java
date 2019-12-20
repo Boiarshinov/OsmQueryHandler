@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class LineString implements GeoJson {
     private Coordinate[] coordinates;
 
-
     @Override
     public Coordinate getCenter() {
         double longitude = 0.0;
@@ -23,6 +22,11 @@ public class LineString implements GeoJson {
     @Override
     public double getArea() {
         return 0;
+    }
+
+    @Override
+    public Coordinate[] getCoordinateArray() {
+        return coordinates;
     }
 
     public void setCoordinates(double[][] coordinates) {

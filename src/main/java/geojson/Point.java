@@ -24,4 +24,9 @@ public class Point implements GeoJson{
     public double getArea() {
         return 0;
     }
+
+    @Override
+    public Coordinate[] getCoordinateArray() {
+        return new Coordinate[]{coordinate};
+    }
 }

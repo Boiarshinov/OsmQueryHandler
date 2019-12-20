@@ -3,11 +3,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import geojson.Coordinate;
 import geojson.GeoJson;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 @JsonAutoDetect
-public class RFSubject implements Serializable {
+public class RFSubject {
     @JsonProperty("place_id")
     public int placeId;
     public String licence;
@@ -76,5 +75,13 @@ public class RFSubject implements Serializable {
         Coordinate oneCorner = new Coordinate(boundingBox[2], boundingBox[0]);
         Coordinate secondCorner = new Coordinate(boundingBox[3], boundingBox[1]);
         this.boundingBox = new Coordinate[]{oneCorner, secondCorner};
+    }
+
+    public Coordinate[] getCoordinateArray(){
+        return geoJson.getCoordinateArray();
+    }
+
+    public Coordinate getCenter(){
+        return geoJson.getCenter();
     }
 }

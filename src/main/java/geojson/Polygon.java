@@ -57,6 +57,12 @@ public class Polygon implements GeoJson{
     }
 
     @Override
+    public Coordinate[] getCoordinateArray() {
+        //return with id = 0 because first linear ring in polygon always have biggest area (look at GeoJSON spec)
+        return linearRings[0].coordinates;
+    }
+
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("\tGeoJson: {\n").append("\t\ttype: Polygon,\n").append("\t\tcoordinates:\n");
@@ -117,6 +123,8 @@ public class Polygon implements GeoJson{
             barycenter = new Coordinate(longitude, latitude);
             return barycenter;
         }
+
+
 
         public double[][] convertToDoubleArray() {
             double[][] result = new double[coordinates.length][2];
