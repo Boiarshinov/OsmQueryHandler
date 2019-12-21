@@ -39,25 +39,25 @@ public class OsmSearchHandler {
      * @param searchQuery - query that would be searching in OSM.
      * @return Object that deserialize from incoming JSON.
      * @throws IOException
-     * @see RFSubject
+     * @see GeoObject
      * @see CacheManager
      */
-    public RFSubject search(String searchQuery) throws IOException {
+    public GeoObject search(String searchQuery) throws IOException {
         System.out.println("\n=================================");
         if (alreadyHaveInCache(searchQuery)){
             System.out.print(searchQuery + " is in the cache. Taking it out... ");
-            RFSubject rfSubject = cacheManager.get(searchQuery);
+            GeoObject geoObject = cacheManager.get(searchQuery);
             System.out.println("Success!");
-            return rfSubject;
+            return geoObject;
         } else {
             System.out.println(searchQuery + " is not in the cache. Connecting to OSM server...");
             URL url = prepareURL(searchQuery);
             System.out.println("Searching by URL: " + url);
             String jsonString = readJsonStringFromURL(url);
             System.out.println("Reading JSON from OSM complete");
-            RFSubject rfSubject = parseJsonString(jsonString);
-            cacheManager.put(searchQuery, rfSubject);
-            return rfSubject;
+            GeoObject geoObject = parseJsonString(jsonString);
+            cacheManager.put(searchQuery, geoObject);
+            return geoObject;
         }
     }
 
@@ -126,11 +126,11 @@ public class OsmSearchHandler {
      * @param jsonString - JSON string come from OSM service
      * @return Always return first answer of OSM, because it's the most correct answer in larger part of queries.
      * @throws IOException
-     * @see RFSubject
+     * @see GeoObject
      */
-    private RFSubject parseJsonString(String jsonString) throws IOException{
+    private GeoObject parseJsonString(String jsonString) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
-        RFSubject[] array = mapper.readValue(jsonString, RFSubject[].class);
+        GeoObject[] array = mapper.readValue(jsonString, GeoObject[].class);
         System.out.println("Parsing complete successfully!");
         return array[0];
     }

@@ -15,7 +15,7 @@ public class ParsingOsmJsonTest {
         String jsonString = stringBuilder.toString();
 
         ObjectMapper mapper = new ObjectMapper();
-        RFSubject[] array = mapper.readValue(jsonString, RFSubject[].class);
+        GeoObject[] array = mapper.readValue(jsonString, GeoObject[].class);
 
         System.out.println("Parsing complete successfully!\n");
 

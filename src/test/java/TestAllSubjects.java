@@ -1,6 +1,5 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class TestAllSubjects {
@@ -11,8 +10,8 @@ public class TestAllSubjects {
         OsmSearchHandler osmSearchHandler = OsmSearchHandler.getInstance();
         for (String query : subjectQueries) {
             try {
-                RFSubject rfSubject = osmSearchHandler.search(query);
-                String geoJsonType = rfSubject.geoJson.getClass().getSimpleName();
+                GeoObject geoObject = osmSearchHandler.search(query);
+                String geoJsonType = geoObject.geoJson.getClass().getSimpleName();
                 geoJsonTypes.add(geoJsonType);
                 System.out.println("Type of GeoJSON: " + geoJsonType);
             } catch (IOException e){

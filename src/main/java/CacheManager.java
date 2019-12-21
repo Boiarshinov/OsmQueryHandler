@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class CacheManager {
     private static CacheManager instance;
-    private LinkedHashMap<String, RFSubject> querySubjectMap;
+    private LinkedHashMap<String, GeoObject> querySubjectMap;
     private final int CACHE_SIZE;
 
     /**
@@ -57,17 +57,17 @@ public class CacheManager {
      * If cache is full when first object in cache would remove
      * and new object will set to the end of the map.<p>
      * @param query query for OSM
-     * @param rfSubject object that return as a result of searching in OSM
+     * @param geoObject object that return as a result of searching in OSM
      * @see OsmSearchHandler
      */
-    public void put(String query, RFSubject rfSubject){
+    public void put(String query, GeoObject geoObject){
         if (querySubjectMap.size() < CACHE_SIZE){
-            querySubjectMap.put(query, rfSubject);
+            querySubjectMap.put(query, geoObject);
         } else {
-            Iterator<Map.Entry<String, RFSubject>> iterator = querySubjectMap.entrySet().iterator();
+            Iterator<Map.Entry<String, GeoObject>> iterator = querySubjectMap.entrySet().iterator();
             iterator.next();
             iterator.remove();
-            querySubjectMap.put(query, rfSubject);
+            querySubjectMap.put(query, geoObject);
         }
     }
 
@@ -76,9 +76,9 @@ public class CacheManager {
      * @param key query for OSM
      * @return object which one was returned by key query
      */
-    public RFSubject get(String key){
+    public GeoObject get(String key){
         if (querySubjectMap.containsKey(key)){
-            RFSubject answer = querySubjectMap.get(key);
+            GeoObject answer = querySubjectMap.get(key);
             replaceSubjectToTheEndOfMap(key, answer);
             return answer;
         } else return null;
@@ -98,9 +98,9 @@ public class CacheManager {
         querySubjectMap.clear();
     }
 
-    private void replaceSubjectToTheEndOfMap(String key, RFSubject rfSubject){
+    private void replaceSubjectToTheEndOfMap(String key, GeoObject geoObject){
         querySubjectMap.remove(key);
-        querySubjectMap.put(key, rfSubject);
+        querySubjectMap.put(key, geoObject);
     }
 
     /**

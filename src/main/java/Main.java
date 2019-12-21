@@ -13,10 +13,10 @@ public class Main {
                 String query = reader.readLine();
                 if (query.equals("exit")) System.exit(0);
 
-                RFSubject rfSubject = osmSearchHandler.search(query);
+                GeoObject geoObject = osmSearchHandler.search(query);
 
-                System.out.println("Coordinates: " + Arrays.toString(rfSubject.getCoordinateArray()) + "\n");
-                System.out.println("Center: " + rfSubject.getCenter());
+                System.out.println("Coordinates: " + Arrays.toString(geoObject.getCoordinateArray()) + "\n");
+                System.out.println("Center: " + geoObject.getCenter());
             }
 
         } catch (IOException e){

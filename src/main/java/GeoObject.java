@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @see GeoJson
  */
 @JsonAutoDetect
-public class RFSubject {
+public class GeoObject {
     @JsonProperty("place_id")
     public int placeId;
     public String licence;
