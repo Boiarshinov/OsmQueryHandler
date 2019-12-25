@@ -36,6 +36,7 @@ Size of the cache can be set by .properties file
 + JDK 12
 + Jackson
 + GeoJSON
++ JUnit 5
 
 #### See also
 + [OpenStreetMap](https://www.openstreetmap.org/)
