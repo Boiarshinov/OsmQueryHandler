@@ -15,7 +15,7 @@ import java.util.Properties;
  * @see LinkedHashMap
  */
 public class CacheManager {
-    private static CacheManager instance;
+    private static CacheManager instance = new CacheManager();
     private LinkedHashMap<String, GeoObject> querySubjectMap;
     private final int CACHE_SIZE;
 
@@ -48,7 +48,6 @@ public class CacheManager {
      * @return Return only instance of CacheManager
      */
     public static CacheManager getInstance() {
-        if (instance == null) instance = new CacheManager();
         return instance;
     }
 

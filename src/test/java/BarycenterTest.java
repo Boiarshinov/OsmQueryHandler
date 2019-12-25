@@ -11,7 +11,7 @@ public class BarycenterTest {
     public static void main(String[] args) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(
-                new FileReader("./src/main/resources/geojson_Polygon.json"))){
+                new FileReader("./src/main/resources/barycenter.json"))){
             while (reader.ready()){
                 stringBuilder.append(reader.readLine());
             }

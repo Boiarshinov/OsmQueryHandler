@@ -32,7 +32,17 @@ public class Polygon implements GeoJson{
         for (int i = 0; i < linearRings.length; i++) {
             this.linearRings[i] = new LinearRing(linearRings[i]);
         }
+
+        if (this.linearRings[0].getArea() < 0) {
+            throw new IllegalArgumentException("First LinearRing should be outer");
+        }
+        for (int i = 1; i < this.linearRings.length; i++) {
+            if (this.linearRings[i].getArea() > 0) {
+                throw new IllegalArgumentException("All LinearRings after first should be holes");
+            }
+        }
     }
+
 
     /**
      * Method is used by Jackson. Convert tree-dimensional double array to LinearRing array.
@@ -126,9 +136,19 @@ public class Polygon implements GeoJson{
          * @param coordinates - two-dimensional double array with coordinates (longitude and latitude)
          */
         public LinearRing(double[][] coordinates) {
+            validateArgs(coordinates);
             this.coordinates = new Coordinate[coordinates.length];
             for (int i = 0; i < coordinates.length; i++) {
                 this.coordinates[i] = new Coordinate(coordinates[i]);
+            }
+        }
+
+        private void validateArgs(double[][] coordinates){
+            if (coordinates.length < 4) {
+                throw new IllegalArgumentException("Should be at least 3 coordinates");
+            }
+            if (!Arrays.equals(coordinates[0], coordinates[coordinates.length - 1])) {
+                throw new IllegalArgumentException("First and last Coordinate in LinearRing should be the same");
             }
         }
 

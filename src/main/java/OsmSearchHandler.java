@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class OsmSearchHandler {
     private CacheManager cacheManager;
-    private static OsmSearchHandler instance;
+    private static OsmSearchHandler instance = new OsmSearchHandler();
 
     private OsmSearchHandler(){
         System.out.println("Configuring OSM Search Handler");
@@ -29,7 +29,6 @@ public class OsmSearchHandler {
      * @return Return only instance of OSMSearchHandler
      */
     public static OsmSearchHandler getInstance(){
-        if (instance == null) instance = new OsmSearchHandler();
         return instance;
     }
 
