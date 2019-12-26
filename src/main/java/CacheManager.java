@@ -18,6 +18,7 @@ public class CacheManager {
     private static CacheManager instance = new CacheManager();
     private LinkedHashMap<String, GeoObject> querySubjectMap;
     private final int CACHE_SIZE;
+    private boolean isCacheOn;
 
     /**
      * Cache size is set by .properties file.<p>
@@ -25,12 +26,19 @@ public class CacheManager {
      */
     private CacheManager() {
         System.out.println("Configuring Cache Manager");
+        isCacheOn = true;
         int tempCacheSize;
         int defaultCacheSize = 100;
         try {
             Properties properties = new Properties();
             properties.load(new FileReader("./src/main/resources/.properties"));
             tempCacheSize = Integer.parseInt(properties.getProperty("Cache_size"));
+            if (tempCacheSize < 0) {
+                System.out.println("Cache size shouldn't be less than zero. Cache size is set to " + defaultCacheSize);
+                tempCacheSize = defaultCacheSize;
+            } else if (tempCacheSize == 0) {
+                isCacheOn = false;
+            }
         } catch (FileNotFoundException e){
             System.out.println("Property file not find. Cache size is set to " + defaultCacheSize);
             tempCacheSize = defaultCacheSize;
@@ -60,6 +68,7 @@ public class CacheManager {
      * @see OsmSearchHandler
      */
     public void put(String query, GeoObject geoObject){
+        if (!isCacheOn) return;
         if (querySubjectMap.size() < CACHE_SIZE){
             querySubjectMap.put(query, geoObject);
         } else {
