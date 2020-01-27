@@ -1,3 +1,5 @@
+package dev.boiarshinov;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,7 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * CacheManager is a class that manage operations with cache.<p>
+ * dev.boiarshinov.CacheManager is a class that manage operations with cache.<p>
  * Cache size is set by .properties file.<p>
  * Cache was realized by the LinkedHashMap. So if cache is full when first object in cache would remove
  * and new object will set to the end of the map.<p>
@@ -53,7 +55,7 @@ public class CacheManager {
 
     /**
      * Class is a singleton.
-     * @return Return only instance of CacheManager
+     * @return Return only instance of dev.boiarshinov.CacheManager
      */
     public static CacheManager getInstance() {
         return instance;

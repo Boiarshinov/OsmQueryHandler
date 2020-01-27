@@ -1,7 +1,7 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import geojson.GeoJson;
-import geojson.MultiPolygon;
-import geojson.Polygon;
+import dev.boiarshinov.geojson.GeoJson;
+import dev.boiarshinov.geojson.MultiPolygon;
+import dev.boiarshinov.geojson.Polygon;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

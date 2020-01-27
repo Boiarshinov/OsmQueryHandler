@@ -1,4 +1,6 @@
-import geojson.MultiPolygon;
+import dev.boiarshinov.GeoObject;
+import dev.boiarshinov.OsmSearchHandler;
+import dev.boiarshinov.geojson.MultiPolygon;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

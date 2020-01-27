@@ -1,4 +1,4 @@
-package geojson;
+package dev.boiarshinov.geojson;
 
 import java.util.Objects;
 

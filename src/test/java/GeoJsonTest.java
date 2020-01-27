@@ -1,5 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import geojson.GeoJson;
+import dev.boiarshinov.geojson.GeoJson;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

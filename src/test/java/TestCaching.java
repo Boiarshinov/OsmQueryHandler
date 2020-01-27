@@ -1,3 +1,5 @@
+import dev.boiarshinov.OsmSearchHandler;
+
 import java.io.IOException;
 
 public class TestCaching {

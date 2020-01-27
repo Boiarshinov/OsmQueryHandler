@@ -1,3 +1,5 @@
+import dev.boiarshinov.CacheManager;
+import dev.boiarshinov.GeoObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

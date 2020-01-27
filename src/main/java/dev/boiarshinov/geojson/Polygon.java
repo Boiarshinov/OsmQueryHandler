@@ -1,4 +1,4 @@
-package geojson;
+package dev.boiarshinov.geojson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * Class realise GeoJSON type <a href=https://tools.ietf.org/html/rfc7946#section-3.1.6>Polygon</a>.<p>
  * Polygon is used to show some areas. These areas can be with holes inside them.<p>
- * Main area and holes submitted by Linear Rings.
+ * dev.boiarshinov.Main area and holes submitted by Linear Rings.
  * @see LinearRing
  * @see Coordinate
  * @see GeoJson

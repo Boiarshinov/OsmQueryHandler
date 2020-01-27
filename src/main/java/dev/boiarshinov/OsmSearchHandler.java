@@ -1,3 +1,5 @@
+package dev.boiarshinov;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
