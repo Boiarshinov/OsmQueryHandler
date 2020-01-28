@@ -1,4 +1,4 @@
-import dev.boiarshinov.OsmSearchHandler;
+import dev.boiarshinov.util.OsmSearchHandler;
 
 import java.io.IOException;
 

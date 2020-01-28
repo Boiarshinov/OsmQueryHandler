@@ -24,19 +24,13 @@ different arrays can be return:
 + Polygon - array with only polygon surface coordinates
 + MultiPolygon - array with coordinates of polygon with biggest area
 
-##### Caching
-Queries and chained objects put in cache. Cache is represented by LinkedHashMap.   
-When the cache is full, the last requested item is removed from the cache. 
-So it use Least Recently Used (LRU) algorithm.  
-Size of the cache can be set by .properties file
- with property **Cache_size**. If there is no .properties file or there is no property 
- **Cache_size** in it then cache size will set to 100 elements.   
-
 #### Technologies
 + JDK 12
 + Jackson
 + GeoJSON
 + JUnit 5
++ Logback
++ Ehcache
 
 #### See also
 + [OpenStreetMap](https://www.openstreetmap.org/)

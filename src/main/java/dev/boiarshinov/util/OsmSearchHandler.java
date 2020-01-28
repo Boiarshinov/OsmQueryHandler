@@ -1,11 +1,13 @@
-package dev.boiarshinov;
+package dev.boiarshinov.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.boiarshinov.dto.GeoObject;
-import dev.boiarshinov.util.CacheSupplier;
 import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,6 +23,8 @@ import java.nio.charset.StandardCharsets;
  * <a href=https://www.openstreetmap.org/>OpenStreetMap</a></p>
  * Class is a singleton.<p>
  */
+@Component
+@Scope("singleton")
 public class OsmSearchHandler {
     private Cache<String, GeoObject> cache;
     private Logger logger = LoggerFactory.getLogger("logger");

@@ -1,5 +1,5 @@
 import dev.boiarshinov.dto.GeoObject;
-import dev.boiarshinov.OsmSearchHandler;
+import dev.boiarshinov.util.OsmSearchHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
