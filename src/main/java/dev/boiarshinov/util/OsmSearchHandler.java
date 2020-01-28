@@ -5,9 +5,9 @@ import dev.boiarshinov.dto.GeoObject;
 import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -53,13 +53,17 @@ public class OsmSearchHandler {
      * @see GeoObject
      */
     public GeoObject search(String searchQuery) throws IOException {
-        logger.info("search query \"{}\" came", searchQuery);
+        return search(searchQuery, null);
+    }
+
+    public GeoObject search(String searchQuery, String geoType) throws IOException{
+        logger.info("search query \"{}\" came with geoType \"{}\"", searchQuery, geoType);
         if (alreadyHaveInCache(searchQuery)){
             logger.info("Taking result from cache");
             return cache.get(searchQuery);
         } else {
             logger.info("Connecting to OSM server to solve query");
-            URL url = prepareURL(searchQuery);
+            URL url = prepareURL(searchQuery, geoType);
             logger.debug("Searching by URL: " + url);
             String jsonString = readJsonStringFromURL(url);
             logger.debug("Reading JSON from OSM complete");
@@ -78,30 +82,27 @@ public class OsmSearchHandler {
         return cache.containsKey(query);
     }
 
-    /**
-     * Encode cyrillic characters to unicode string
-     * @param searchQuery query to OSM
-     * @return encoded String
-     * @see URLEncoder
-     */
     private String encodeSearchQuery(String searchQuery) {
         return URLEncoder.encode(searchQuery, StandardCharsets.UTF_8);
     }
 
-    /**
-     * Prepare URL for opening HTTP connection
-     * @param query - query for OSM
-     * @return fabricate URL
-     * @throws MalformedURLException
-     */
-    private URL prepareURL(String query) throws MalformedURLException{
-        String SOURCE = "https://nominatim.openstreetmap.org/";
-        return new URL(SOURCE + "search?q=" +
-                encodeSearchQuery(query) + "&" +
-                "country=russia" + "&" +
-                "format=json" + "&" +
-                "polygon_geojson=1" + "&" +
-                "limit=1");
+    private URL prepareURL(String query, String geoType) throws MalformedURLException{
+        query = encodeSearchQuery(query);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
+        uriBuilder.scheme("https").
+                host("nominatim.openstreetmap.org").
+                path("search").
+                queryParam("format", "json").
+                queryParam("polygon_geojson", 1).
+                queryParam("limit", 1);
+
+        if (geoType != null){
+            uriBuilder.queryParam(geoType, query);
+            if(!geoType.equals("country")){
+                uriBuilder.queryParam("country", "russia");
+            }
+        }
+        return new URL(uriBuilder.build().toUriString());
     }
 
     /**

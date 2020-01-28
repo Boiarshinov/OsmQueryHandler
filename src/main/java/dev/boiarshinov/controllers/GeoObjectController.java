@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class GeoObjectController {
@@ -20,9 +22,19 @@ public class GeoObjectController {
     public GeoObject getGeoObject(
             @RequestParam(value="name", required = true) String name,
             @RequestParam(value = "type", required = false) String type){
-        try {
-            return osmSearchHandler.search(name);
+
+        try{
+            if(type == null) {
+                return osmSearchHandler.search(name);
+            }
+            else {
+                if (!getTypeRestrictions().contains(type.toLowerCase())) {
+                    throw new IllegalArgumentException(type + "is not defiened");
+                }
+                return osmSearchHandler.search(name, type);
+            }
         } catch (IOException e){
+            logger.error("Search crashes", e);
             e.printStackTrace();
         }
         return null;
@@ -31,5 +43,15 @@ public class GeoObjectController {
     @Autowired
     public void setOsmSearchHandler(OsmSearchHandler osmSearchHandler) {
         this.osmSearchHandler = osmSearchHandler;
+    }
+
+    private List<String> getTypeRestrictions(){
+        List<String> typeRestrictions = new ArrayList<>();
+        typeRestrictions.add("street");
+        typeRestrictions.add("city");
+        typeRestrictions.add("county");
+        typeRestrictions.add("country");
+        typeRestrictions.add("postalcode");
+        return typeRestrictions;
     }
 }
