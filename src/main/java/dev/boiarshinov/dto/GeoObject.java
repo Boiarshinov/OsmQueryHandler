@@ -1,4 +1,4 @@
-package dev.boiarshinov;
+package dev.boiarshinov.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;

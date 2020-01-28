@@ -1,5 +1,7 @@
 package dev.boiarshinov;
 
+import dev.boiarshinov.dto.GeoObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

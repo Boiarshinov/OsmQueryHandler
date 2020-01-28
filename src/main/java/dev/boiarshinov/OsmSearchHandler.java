@@ -1,6 +1,9 @@
 package dev.boiarshinov;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.boiarshinov.dto.GeoObject;
+import dev.boiarshinov.util.CacheSupplier;
+import org.ehcache.Cache;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,12 +20,12 @@ import java.nio.charset.StandardCharsets;
  * Class is a singleton.<p>
  */
 public class OsmSearchHandler {
-    private CacheManager cacheManager;
+    private Cache<String, GeoObject> cache;
     private static OsmSearchHandler instance = new OsmSearchHandler();
 
     private OsmSearchHandler(){
         System.out.println("Configuring OSM Search Handler");
-        cacheManager = CacheManager.getInstance();
+        cache = CacheSupplier.getCache();
         System.out.println("OSM Search Handler configured!");
     }
 
@@ -41,13 +44,12 @@ public class OsmSearchHandler {
      * @return Object that deserialize from incoming JSON.
      * @throws IOException
      * @see GeoObject
-     * @see CacheManager
      */
     public GeoObject search(String searchQuery) throws IOException {
         System.out.println("\n=================================");
         if (alreadyHaveInCache(searchQuery)){
             System.out.print(searchQuery + " is in the cache. Taking it out... ");
-            GeoObject geoObject = cacheManager.get(searchQuery);
+            GeoObject geoObject = cache.get(searchQuery);
             System.out.println("Success!");
             return geoObject;
         } else {
@@ -57,7 +59,7 @@ public class OsmSearchHandler {
             String jsonString = readJsonStringFromURL(url);
             System.out.println("Reading JSON from OSM complete");
             GeoObject geoObject = parseJsonString(jsonString);
-            cacheManager.put(searchQuery, geoObject);
+            cache.put(searchQuery, geoObject);
             return geoObject;
         }
     }
@@ -66,10 +68,9 @@ public class OsmSearchHandler {
      * Check cache for object with same query
      * @param query query for OSM
      * @return true if cache already have object with same query
-     * @see CacheManager
      */
     private boolean alreadyHaveInCache(String query){
-        return cacheManager.containsKey(query);
+        return cache.containsKey(query);
     }
 
     /**

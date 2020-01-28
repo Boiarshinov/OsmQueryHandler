@@ -1,4 +1,4 @@
-import dev.boiarshinov.GeoObject;
+import dev.boiarshinov.dto.GeoObject;
 import dev.boiarshinov.OsmSearchHandler;
 import dev.boiarshinov.geojson.MultiPolygon;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,4 +1,4 @@
-import dev.boiarshinov.GeoObject;
+import dev.boiarshinov.dto.GeoObject;
 import dev.boiarshinov.OsmSearchHandler;
 
 import java.io.*;

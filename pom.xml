@@ -14,6 +14,9 @@
         <spring-boot-version>2.2.2.RELEASE</spring-boot-version>
         <spring-core-version>5.2.3.RELEASE</spring-core-version>
         <json-path-version>2.4.0</json-path-version>
+        <geojson-jackson-version>1.12</geojson-jackson-version>
+        <cache-api-version>1.1.1</cache-api-version>
+        <ehcache-version>3.8.1</ehcache-version>
     </properties>
 
     <dependencies>
@@ -34,6 +37,18 @@
             <version>2.4.0</version>
         </dependency>
 
+<!--        cache-->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${cache-api-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${ehcache-version}</version>
+        </dependency>
+
 <!--        jackson-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -51,11 +66,19 @@
             <version>${jackson-version}</version>
         </dependency>
 
+<!--        junit-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.5.2</version>
             <scope>test</scope>
+        </dependency>
+
+<!--        geojson-->
+        <dependency>
+            <groupId>de.grundid.opendatalab</groupId>
+            <artifactId>geojson-jackson</artifactId>
+            <version>${geojson-jackson-version}</version>
         </dependency>
     </dependencies>
 
