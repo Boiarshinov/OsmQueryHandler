@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 @Scope("singleton")
 public class OsmSearchHandler {
     private Cache<String, GeoObject> cache;
-    private Logger logger = LoggerFactory.getLogger("logger");
+    private Logger logger = LoggerFactory.getLogger(OsmSearchHandler.class);
     private static OsmSearchHandler instance = new OsmSearchHandler();
 
     private OsmSearchHandler(){
