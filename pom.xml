@@ -17,6 +17,8 @@
         <geojson-jackson-version>1.12</geojson-jackson-version>
         <cache-api-version>1.1.1</cache-api-version>
         <ehcache-version>3.8.1</ehcache-version>
+        <logback-version>1.2.3</logback-version>
+        <slf4j-version>1.7.30</slf4j-version>
     </properties>
 
     <dependencies>
@@ -79,6 +81,23 @@
             <groupId>de.grundid.opendatalab</groupId>
             <artifactId>geojson-jackson</artifactId>
             <version>${geojson-jackson-version}</version>
+        </dependency>
+
+<!--        logging-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
         </dependency>
     </dependencies>
 

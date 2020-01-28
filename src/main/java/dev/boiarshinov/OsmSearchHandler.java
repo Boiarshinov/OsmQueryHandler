@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.boiarshinov.dto.GeoObject;
 import dev.boiarshinov.util.CacheSupplier;
 import org.ehcache.Cache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,12 +23,13 @@ import java.nio.charset.StandardCharsets;
  */
 public class OsmSearchHandler {
     private Cache<String, GeoObject> cache;
+    private Logger logger = LoggerFactory.getLogger("logger");
     private static OsmSearchHandler instance = new OsmSearchHandler();
 
     private OsmSearchHandler(){
-        System.out.println("Configuring OSM Search Handler");
+        logger.debug("Configuring OSM Search Handler");
         cache = CacheSupplier.getCache();
-        System.out.println("OSM Search Handler configured!");
+        logger.debug("OSM Search Handler configured!");
     }
 
     /**
@@ -46,18 +49,16 @@ public class OsmSearchHandler {
      * @see GeoObject
      */
     public GeoObject search(String searchQuery) throws IOException {
-        System.out.println("\n=================================");
+        logger.info("search query \"{}\" came", searchQuery);
         if (alreadyHaveInCache(searchQuery)){
-            System.out.print(searchQuery + " is in the cache. Taking it out... ");
-            GeoObject geoObject = cache.get(searchQuery);
-            System.out.println("Success!");
-            return geoObject;
+            logger.info("Taking result from cache");
+            return cache.get(searchQuery);
         } else {
-            System.out.println(searchQuery + " is not in the cache. Connecting to OSM server...");
+            logger.info("Connecting to OSM server to solve query");
             URL url = prepareURL(searchQuery);
-            System.out.println("Searching by URL: " + url);
+            logger.debug("Searching by URL: " + url);
             String jsonString = readJsonStringFromURL(url);
-            System.out.println("Reading JSON from OSM complete");
+            logger.debug("Reading JSON from OSM complete");
             GeoObject geoObject = parseJsonString(jsonString);
             cache.put(searchQuery, geoObject);
             return geoObject;
@@ -133,7 +134,7 @@ public class OsmSearchHandler {
     private GeoObject parseJsonString(String jsonString) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         GeoObject[] array = mapper.readValue(jsonString, GeoObject[].class);
-        System.out.println("Parsing complete successfully!");
+        logger.debug("Parsing complete successfully!");
         return array[0];
     }
 }
