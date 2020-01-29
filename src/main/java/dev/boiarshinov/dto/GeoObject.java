@@ -35,10 +35,8 @@ public class GeoObject {
     public String type;
     public double importance;
     public String icon;
-
     @JsonProperty("geojson")
     public GeoJson geoJson;
-
 
     @Override
     public String toString() {
@@ -58,6 +56,8 @@ public class GeoObject {
                 "geoJson=" + geoJson + "\n" +
                 '}';
     }
+
+    //Methods for Jackson parser
 
     public String getLatitude() {
         return String.valueOf(latitude);
@@ -83,13 +83,5 @@ public class GeoObject {
         Coordinate oneCorner = new Coordinate(boundingBox[2], boundingBox[0]);
         Coordinate secondCorner = new Coordinate(boundingBox[3], boundingBox[1]);
         this.boundingBox = new Coordinate[]{oneCorner, secondCorner};
-    }
-
-    public Coordinate[] getCoordinateArray(){
-        return geoJson.getCoordinateArray();
-    }
-
-    public Coordinate getCenter(){
-        return geoJson.getCenter();
     }
 }

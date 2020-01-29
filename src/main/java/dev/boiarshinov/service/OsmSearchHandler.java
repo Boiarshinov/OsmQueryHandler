@@ -1,10 +1,12 @@
-package dev.boiarshinov.util;
+package dev.boiarshinov.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.boiarshinov.dto.GeoObject;
 import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,11 +32,7 @@ public class OsmSearchHandler {
     private Logger logger = LoggerFactory.getLogger(OsmSearchHandler.class);
     private static OsmSearchHandler instance = new OsmSearchHandler();
 
-    private OsmSearchHandler(){
-        logger.debug("Configuring OSM Search Handler");
-        cache = CacheSupplier.getCache();
-        logger.debug("OSM Search Handler configured!");
-    }
+    private OsmSearchHandler(){}
 
     /**
      * Class is a singleton.
@@ -68,7 +66,7 @@ public class OsmSearchHandler {
             String jsonString = readJsonStringFromURL(url);
             logger.debug("Reading JSON from OSM complete");
             GeoObject geoObject = parseJsonString(jsonString);
-            cache.put(searchQuery, geoObject);
+            putInCache(searchQuery, geoObject);
             return geoObject;
         }
     }
@@ -79,7 +77,12 @@ public class OsmSearchHandler {
      * @return true if cache already have object with same query
      */
     private boolean alreadyHaveInCache(String query){
+        if (cache == null) return false;
         return cache.containsKey(query);
+    }
+
+    private void putInCache(String searchQuery, GeoObject geoObject){
+        if (cache != null) cache.put(searchQuery, geoObject);
     }
 
     private String encodeSearchQuery(String searchQuery) {
@@ -141,5 +144,10 @@ public class OsmSearchHandler {
         GeoObject[] array = mapper.readValue(jsonString, GeoObject[].class);
         logger.debug("Parsing complete successfully!");
         return array[0];
+    }
+
+    @Autowired
+    public void setCache(@Qualifier("cache") Cache<String, GeoObject> cache) {
+        this.cache = cache;
     }
 }
