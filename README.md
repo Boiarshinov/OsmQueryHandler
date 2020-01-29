@@ -1,10 +1,20 @@
 # OSM Query Handler
-OSM Query Handler is intended to search geographical objects into OpenStreetMap (OSM).  
+OSM Query Handler is REST-service intended to search geographical objects into OpenStreetMap (OSM)
+and return coordinates or center of the object biggest part.  
 Search is handling by pushing the GET query to Nominatim - instrument for searching in OSM.  
 From Nominatim comes JSON string that parse by Jackson to geographical object. 
 Objects have a lot of info and main of it is a GeoJSON.  
 Objects can return coordinate array of their biggest area. 
 Also they can return coordinate of their center.
+
+#### REST API
+Get coordinate array of geo Object  
+| header | header |
+| --- | --- |
+| URL | /coordinates |
+| Method | GET |
+
+
 
 ##### GeoJSON
 GeoJSON spec define a lot of object types. But in this program used only four of them:
