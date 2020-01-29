@@ -8,14 +8,31 @@ Objects can return coordinate array of their biggest area.
 Also they can return coordinate of their center.
 
 #### REST API
-Get coordinate array of geo Object  
-| header | header |
+Get coordinate array of geo Object biggest part  
+
+|     |     |
 | --- | --- |
 | URL | /coordinates |
 | Method | GET |
+| URL parameters | name, type |
+| Success response | {coordinates:[double[][2]]} |
 
+Get center coordinates of geo Object biggest part  
 
+|     |     |
+| --- | --- |
+| URL | /center |
+| Method | GET |
+| URL parameters | name, type |
+| Success response | {center:[double[2]]} |
 
+There is a list of "type" possible values:
+- street
+- city
+- county
+- country
+- postalcode
+  
 ##### GeoJSON
 GeoJSON spec define a lot of object types. But in this program used only four of them:
 + MultiPolygon
