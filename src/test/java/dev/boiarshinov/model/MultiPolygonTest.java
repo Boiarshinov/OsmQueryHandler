@@ -1,5 +1,7 @@
-package geojson;
+package dev.boiarshinov.model;
 
+import dev.boiarshinov.model.geojson.Coordinate;
+import dev.boiarshinov.model.geojson.MultiPolygon;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

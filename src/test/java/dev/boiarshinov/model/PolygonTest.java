@@ -1,8 +1,8 @@
-package geojson;
+package dev.boiarshinov.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.boiarshinov.model.geojson.Coordinate;
+import dev.boiarshinov.model.geojson.Polygon;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 

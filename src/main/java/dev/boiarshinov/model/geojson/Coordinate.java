@@ -1,4 +1,4 @@
-package geojson;
+package dev.boiarshinov.model.geojson;
 
 import java.util.Objects;
 
@@ -13,8 +13,8 @@ public class Coordinate {
     public double longitude;
 
     public Coordinate(double longitude, double latitude) {
-        this.latitude = latitude;
         this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     /**

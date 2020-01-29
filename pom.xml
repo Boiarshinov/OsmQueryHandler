@@ -4,35 +4,102 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>boiarshinov</groupId>
+    <groupId>dev.boiarshinov</groupId>
     <artifactId>ManagingOSM</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <java-version>12</java-version>
+        <jackson-version>2.10.2</jackson-version>
+        <spring-boot-version>2.2.2.RELEASE</spring-boot-version>
+        <spring-core-version>5.2.3.RELEASE</spring-core-version>
+        <json-path-version>2.4.0</json-path-version>
+        <geojson-jackson-version>1.12</geojson-jackson-version>
+        <cache-api-version>1.1.1</cache-api-version>
+        <ehcache-version>3.8.1</ehcache-version>
+        <logback-version>1.2.3</logback-version>
+        <slf4j-version>1.7.30</slf4j-version>
+    </properties>
+
     <dependencies>
+<!--        spring-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring-core-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+
+<!--        cache-->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${cache-api-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${ehcache-version}</version>
+        </dependency>
+
+<!--        jackson-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.10.1</version>
+            <version>${jackson-version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.9.9</version>
+            <version>${jackson-version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.9</version>
+            <version>${jackson-version}</version>
         </dependency>
 
+<!--        junit-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.5.2</version>
             <scope>test</scope>
         </dependency>
+
+<!--        geojson-->
+        <dependency>
+            <groupId>de.grundid.opendatalab</groupId>
+            <artifactId>geojson-jackson</artifactId>
+            <version>${geojson-jackson-version}</version>
+        </dependency>
+
+<!--        logging-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -43,8 +110,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
-                        <source>12</source>
-                        <target>12</target>
+                        <source>${java-version}</source>
+                        <target>${java-version}</target>
                     </configuration>
                 </plugin>
             </plugins>

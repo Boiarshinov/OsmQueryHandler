@@ -1,5 +1,6 @@
-package geojson;
+package dev.boiarshinov.model;
 
+import dev.boiarshinov.model.geojson.Coordinate;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
