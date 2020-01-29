@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class GeoObjectParser {
     private Logger logger = LoggerFactory.getLogger(GeoObjectParser.class);
 
-    public GeoObject parseJson(String jsonString) throws JsonProcessingException {
+    GeoObject parseJson(String jsonString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         GeoObject[] array = mapper.readValue(jsonString, GeoObject[].class);
         logger.debug("Parsing complete successfully!");

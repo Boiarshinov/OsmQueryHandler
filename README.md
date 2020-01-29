@@ -14,7 +14,7 @@ Get coordinate array of geo Object biggest part
 | --- | --- |
 | URL | /coordinates |
 | Method | GET |
-| URL parameters | name, type |
+| URL parameters | name (required), type (optional) |
 | Success response | {coordinates:[double[][2]]} |
 
 Get center coordinates of geo Object biggest part  
@@ -23,7 +23,7 @@ Get center coordinates of geo Object biggest part
 | --- | --- |
 | URL | /center |
 | Method | GET |
-| URL parameters | name, type |
+| URL parameters | name (required), type (optional) |
 | Success response | {center:[double[2]]} |
 
 There is a list of "type" possible values:

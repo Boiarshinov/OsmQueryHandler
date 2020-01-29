@@ -23,7 +23,7 @@ public class OsmSearcher {
     private Logger logger = LoggerFactory.getLogger(OsmSearcher.class);
     private static OsmSearcher instance = new OsmSearcher();
 
-    public String search(URL searchQuery) throws IOException {
+    String search(URL searchQuery) throws IOException {
         logger.debug("Searching by URL: " + searchQuery);
         String jsonString = readJsonStringFromURL(searchQuery);
         logger.debug("Reading JSON from OSM complete");
