@@ -2,14 +2,12 @@ package dev.boiarshinov.util;
 
 import dev.boiarshinov.dto.CenterDTO;
 import dev.boiarshinov.dto.CoordinatesDTO;
-import dev.boiarshinov.dto.GeoObject;
-import dev.boiarshinov.geojson.Coordinate;
+import dev.boiarshinov.model.GeoObject;
+import dev.boiarshinov.model.geojson.Coordinate;
 
-import java.util.Arrays;
+public class ResponsePreparer {
 
-public class GeoObjectService {
-
-    private GeoObjectService(){}
+    private ResponsePreparer(){}
 
     public static CoordinatesDTO getCoordinates(GeoObject geoObject){
         Coordinate[] coordinates = geoObject.geoJson.getCoordinateArray();

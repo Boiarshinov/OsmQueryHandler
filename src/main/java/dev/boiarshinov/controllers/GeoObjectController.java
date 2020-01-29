@@ -2,10 +2,9 @@ package dev.boiarshinov.controllers;
 
 import dev.boiarshinov.dto.CenterDTO;
 import dev.boiarshinov.dto.CoordinatesDTO;
-import dev.boiarshinov.dto.GeoObject;
-import dev.boiarshinov.geojson.Coordinate;
-import dev.boiarshinov.util.GeoObjectService;
-import dev.boiarshinov.service.OsmSearchHandler;
+import dev.boiarshinov.model.GeoObject;
+import dev.boiarshinov.service.MainService;
+import dev.boiarshinov.util.ResponsePreparer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @RestController
 public class GeoObjectController {
-    private OsmSearchHandler osmSearchHandler;
+    private MainService mainService;
     private Logger logger = LoggerFactory.getLogger(GeoObjectController.class);
 
     @RequestMapping("/coordinates")
@@ -27,7 +26,7 @@ public class GeoObjectController {
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "type", required = false) String type) {
         GeoObject geoObject = getGeoObject(name, type);
-        CoordinatesDTO response = GeoObjectService.getCoordinates(geoObject);
+        CoordinatesDTO response = ResponsePreparer.getCoordinates(geoObject);
         return response;
     }
 
@@ -36,19 +35,19 @@ public class GeoObjectController {
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "type", required = false) String type) {
         GeoObject geoObject = getGeoObject(name, type);
-        CenterDTO centerDTO = GeoObjectService.getCenter(geoObject);
+        CenterDTO centerDTO = ResponsePreparer.getCenter(geoObject);
         return centerDTO;
     }
 
     private GeoObject getGeoObject(String name, String type) {
         try {
             if (type == null) {
-                return osmSearchHandler.search(name);
+                return mainService.service(name);
             } else {
                 if (!getTypeRestrictions().contains(type.toLowerCase())) {
                     throw new IllegalArgumentException(type + "is not defiened");
                 }
-                return osmSearchHandler.search(name, type);
+                return mainService.service(name, type);
             }
         } catch (IOException e) {
             logger.error("Search crashes", e);
@@ -58,8 +57,8 @@ public class GeoObjectController {
     }
 
     @Autowired
-    public void setOsmSearchHandler(OsmSearchHandler osmSearchHandler) {
-        this.osmSearchHandler = osmSearchHandler;
+    public void setMainService(MainService mainService) {
+        this.mainService = mainService;
     }
 
     private List<String> getTypeRestrictions() {

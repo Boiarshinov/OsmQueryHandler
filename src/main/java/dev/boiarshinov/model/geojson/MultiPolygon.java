@@ -1,4 +1,4 @@
-package dev.boiarshinov.geojson;
+package dev.boiarshinov.model.geojson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -75,7 +75,7 @@ public class MultiPolygon implements GeoJson{
     /**
      * @return Coordinate array of outer linear ring of biggest polygon
      * @see Polygon
-     * @see dev.boiarshinov.geojson.Polygon.LinearRing
+     * @see dev.boiarshinov.model.geojson.Polygon.LinearRing
      */
     @Override
     public Coordinate[] getCoordinateArray() {

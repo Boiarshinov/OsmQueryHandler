@@ -1,4 +1,4 @@
-package dev.boiarshinov.geojson;
+package dev.boiarshinov.model.geojson;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

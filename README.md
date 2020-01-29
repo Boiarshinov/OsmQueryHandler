@@ -26,8 +26,10 @@ different arrays can be return:
 
 #### Technologies
 + JDK 12
++ Spring Boot
++ Spring REST
 + Jackson
-+ GeoJSON
++ GeoJSON (not dependency just conception)
 + JUnit 5
 + Logback
 + Ehcache
@@ -36,3 +38,6 @@ different arrays can be return:
 + [OpenStreetMap](https://www.openstreetmap.org/)
 + [GeoJSON spec](https://tools.ietf.org/html/rfc7946)
 + [Nominatim spec](https://nominatim.org/release-docs/latest/)
+
+#### About
+This project was wrote as test exercise for [Cosysoft](https://cosysoft.ru/vacancy).

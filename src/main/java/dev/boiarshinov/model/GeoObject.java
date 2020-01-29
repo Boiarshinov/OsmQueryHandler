@@ -1,9 +1,9 @@
-package dev.boiarshinov.dto;
+package dev.boiarshinov.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.boiarshinov.geojson.Coordinate;
-import dev.boiarshinov.geojson.GeoJson;
+import dev.boiarshinov.model.geojson.Coordinate;
+import dev.boiarshinov.model.geojson.GeoJson;
 
 import java.util.Arrays;
 
