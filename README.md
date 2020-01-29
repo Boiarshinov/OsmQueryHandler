@@ -7,7 +7,7 @@ Objects have a lot of info and main of it is a GeoJSON.
 Objects can return coordinate array of their biggest area. 
 Also they can return coordinate of their center.
 
-#### REST API
+### REST API
 Get coordinate array of geo Object biggest part  
 
 |     |     |
@@ -33,7 +33,7 @@ There is a list of "type" possible values:
 - country
 - postalcode
   
-##### GeoJSON
+### GeoJSON
 GeoJSON spec define a lot of object types. But in this program used only four of them:
 + MultiPolygon
 + Polygon
@@ -42,7 +42,7 @@ GeoJSON spec define a lot of object types. But in this program used only four of
 
 There is only four types because most of searching queries to OSM return one of this types.
 
-##### Calculating
+### Calculating
 All calculates neglect spheroidality of Earth.  
 While calculating the coordinate array of the objects with different types of GeoJSON - 
 different arrays can be return:
@@ -51,7 +51,7 @@ different arrays can be return:
 + Polygon - array with only polygon surface coordinates
 + MultiPolygon - array with coordinates of polygon with biggest area
 
-#### Technologies
+### Technologies
 + JDK 12
 + Spring Boot
 + Spring REST
@@ -61,10 +61,10 @@ different arrays can be return:
 + Logback
 + Ehcache
 
-#### See also
+### See also
 + [OpenStreetMap](https://www.openstreetmap.org/)
 + [GeoJSON spec](https://tools.ietf.org/html/rfc7946)
 + [Nominatim spec](https://nominatim.org/release-docs/latest/)
 
-#### About
+### About
 This project was wrote as test exercise for [Cosysoft](https://cosysoft.ru/vacancy).
